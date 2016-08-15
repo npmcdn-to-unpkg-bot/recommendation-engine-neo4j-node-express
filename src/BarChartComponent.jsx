@@ -19,7 +19,9 @@ class BarChartComponent extends Component{
   constructor(props){
     super(props)
     this.state ={
-      data: this.props.data
+      data: this.props.data,
+      height: this.props.height,
+      width: this.props.width
     }
   }
 
@@ -28,9 +30,9 @@ class BarChartComponent extends Component{
       <h3>Panel title</h3>
     );
     return (
-        <Panel header={title} bsStyle="primary">
-          <BarChart data={this.state.data} options={options}/>
-        </Panel>
+
+          <BarChart data={this.state.data} height={this.state.height} width={this.state.width} options={options}/>
+        
       )
   }
 }

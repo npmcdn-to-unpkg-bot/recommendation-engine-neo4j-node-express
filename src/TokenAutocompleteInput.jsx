@@ -15,11 +15,14 @@ class TokenAutocompleteInput extends Component{
   }
 
   handleChange = (e) => {
+
     if(e[0] !== undefined)
       this.props.handleTokenSelection(e[0].name)
   }
 
   render(){
+
+    debugger;
      return (
        <TokenAutocomplete
         multiple

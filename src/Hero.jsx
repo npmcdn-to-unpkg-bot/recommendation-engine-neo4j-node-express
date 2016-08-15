@@ -5,7 +5,7 @@ class Hero extends Component {
   render() {
     return (
       <Jumbotron>
-        <h1>What to learn Next.</h1>
+        <h1>For Devs By Devs</h1>
         <p>This is a simple page to help you learn what skills you should learn next.</p>
       </Jumbotron>
     );
