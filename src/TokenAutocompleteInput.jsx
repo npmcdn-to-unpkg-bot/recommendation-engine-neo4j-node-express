@@ -14,10 +14,13 @@ class TokenAutocompleteInput extends Component{
     }
   }
 
+  handleInputChange = (e) => {
+
+      this.props.handleTokenSelection(e)
+  }
   handleChange = (e) => {
 
-    if(e[0] !== undefined)
-      this.props.handleTokenSelection(e[0].name)
+      this.props.handleTokenSelection(e)
   }
 
   render(){
@@ -25,6 +28,7 @@ class TokenAutocompleteInput extends Component{
        <TokenAutocomplete
         multiple
         labelKey="name"
+        onInputChange={(e) => this.handleChange(e)}
         onChange={(e) => this.handleChange(e)}
         options={this.state.myData}
        />

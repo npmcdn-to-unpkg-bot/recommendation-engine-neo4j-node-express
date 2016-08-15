@@ -24,7 +24,6 @@ class BarChartComponent extends Component{
     const title = (
       <h3>Panel title</h3>
     );
-    debugger;
     return (
 
           <BarChart data={this.props.data} options={options}/>

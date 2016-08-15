@@ -27,7 +27,7 @@ class App extends React.Component {
   constructor(props){
         super(props);
         this.state = {
-          searchBarText:'',
+          SkillNamesQuery: '',
           TokenSelection: '',
           SalaryJuniorSeniorIsVisible: false,
           chartHeight:250,
@@ -35,6 +35,7 @@ class App extends React.Component {
           SalaryJuniorSeniorData: {
             labels: ['Junior', 'Senior'],
             datasets: [{
+                    label: "My First dataset",
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.5)',
                         'rgba(54, 162, 235, 0.5)',
@@ -145,10 +146,11 @@ class App extends React.Component {
       };
     }
 
-  _handleTextInput = (text) => {
-    this.setState({searchBarText: text,
-    });
-  }
+  // handleTextInput = (searchTerms) => {
+  //
+  //   var skillNames = '';
+  //
+  // }
 
   _appear = (visible) => {
     this.setState({SalaryJuniorSeniorIsVisible: visible
@@ -156,45 +158,53 @@ class App extends React.Component {
 
   }
 
-  _handleTokenSelection = (text) => {
+  _handleTokenSelection = (searchTerms) => {
+    //store context
+    var self = this
 
+    //creat query string
+    var skillNames = ''
+    for (var i = 0; i < searchTerms.length; i++) {
+      skillNames = skillNames + 's.name = \''+searchTerms[i].name+'\' or ';
+    }
+    //update the state
+    this.setState({SkillNamesQuery: skillNames  });
+
+    //remove trailing or statement
+
+    skillNames = skillNames.slice(0, -3)
     //get salaries
     var salarydata = {}
-    var self = this
-    $.ajax({
+    $.ajax("http://localhost:7474/db/data/cypher", {
         type: "POST",
-        url: "http://localhost:7474/db/data/cypher",
         accepts: { json: "application/json" },
         dataType: "json",
         headers:{'X-Stream': true},
         contentType:"application/json",
-        data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where s.name = \''+text+'\' and d.experience_midpoint < 2 return avg(d.salary_midpoint)as salary order by salary desc' }),
-        success: function(data){
-          salarydata['JuniorSalary'] = data.data[0][0]
-        }
-     }).then($.ajax({
+        data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where '+skillNames+' and d.experience_midpoint < 2 return avg(d.salary_midpoint)as salary order by salary desc'}),
+     }).then(function (data){
+       salarydata['JuniorSalary'] = data.data[0][0];
+
+       return $.ajax("http://localhost:7474/db/data/cypher", {
          type: "POST",
-         url: "http://localhost:7474/db/data/cypher",
          accepts: { json: "application/json" },
          dataType: "json",
          headers:{'X-Stream': true},
          contentType:"application/json",
-         data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where s.name = \''+text+'\' and d.experience_midpoint > 2 return avg(d.salary_midpoint)as salary order by salary desc' }),
-         success: function(data){
-           salarydata['SeniorSalary'] = data.data[0][0]
-           self.changeAppState(salarydata)
-         }
-      }));
-
-
+         data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where '+skillNames+' and d.experience_midpoint > 2 return avg(d.salary_midpoint)as salary order by salary desc' }),
+      });
+    }).then(function (data) {
+      salarydata['SeniorSalary'] = data.data[0][0]
+      self.changeSalaryData(salarydata)
+    });
   }
 
-  changeAppState = (data) => {
-    debugger;
+  changeSalaryData = (data) => {
     this.setState({
       SalaryJuniorSeniorData: {
         labels: ['Junior', 'Senior'],
         datasets: [{
+                label: "Salaries",
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.5)',
                     'rgba(54, 162, 235, 0.5)',
@@ -280,7 +290,7 @@ class App extends React.Component {
               <div className="col-sm-6 col-md-4">
                 <div className="chart-wrapper">
                   <div className="chart-title">
-                    Cell Title
+                    Average Salary for a Junior vs Senior Developer
                   </div>
                   <div className="chart-stage">
                     <BarChartComponent data={this.state.SalaryJuniorSeniorData}/>
