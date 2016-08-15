@@ -10,10 +10,13 @@ import TokenAutocompleteInput from './TokenAutocompleteInput.jsx'
 import PlotlyChartComponent from './PlotlyChartComponent.jsx'
 import BarChartComponent from './BarChartComponent.jsx'
 import DoughnutChartComponent from './DoughnutChartComponent.jsx'
+import PolarChartComponent from './PolarChartComponent.jsx'
+import RadarChartComponent from './RadarChartComponent.jsx'
 import GraphVisComponent from './GraphVisComponent.jsx'
 import Hero from './Hero.jsx'
 import {Panel,Grid,Row,Col,PageHeader } from 'react-bootstrap';
 import { SideNav, Nav } from 'react-sidenav';
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 // http://alpha.wallhaven.cc/wallpaper/164335
 const wallpaper = 'http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-164335.png';
@@ -82,7 +85,58 @@ class App extends React.Component {
                           "#FFCE56"
                       ]
                   }]
-              }
+              },
+              IndustryJobsCountData:{
+                  datasets: [{
+                      data: [
+                          11,
+                          16,
+                          7,
+                          3,
+                          14
+                      ],
+                      backgroundColor: [
+                          "#FF6384",
+                          "#4BC0C0",
+                          "#FFCE56",
+                          "#E7E9ED",
+                          "#36A2EB"
+                      ],
+                      label: 'My dataset' // for legend
+                  }],
+                  labels: [
+                      "Red",
+                      "Green",
+                      "Yellow",
+                      "Grey",
+                      "Blue"
+                  ]
+              },
+              JobInfoData:{
+                labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+                datasets: [
+                    {
+                        label: "My First dataset",
+                        backgroundColor: "rgba(179,181,198,0.2)",
+                        borderColor: "rgba(179,181,198,1)",
+                        pointBackgroundColor: "rgba(179,181,198,1)",
+                        pointBorderColor: "#fff",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(179,181,198,1)",
+                        data: [65, 59, 90, 81, 56, 55, 40]
+                    },
+                    {
+                        label: "My Second dataset",
+                        backgroundColor: "rgba(255,99,132,0.2)",
+                        borderColor: "rgba(255,99,132,1)",
+                        pointBackgroundColor: "rgba(255,99,132,1)",
+                        pointBorderColor: "#fff",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(255,99,132,1)",
+                        data: [28, 48, 40, 19, 96, 27, 100]
+                    }
+                ]
+            }
 
       };
     }
@@ -153,6 +207,22 @@ class App extends React.Component {
     				</div>
     				<div class="col-md-8">
               <DoughnutChartComponent data={this.state.SeniorSkillsData}/>
+    				</div>
+    			</div>
+          <div class="row">
+    				<div class="col-md-4">
+              <PageHeader>Industries by job count <small>View of the job counts by industries</small></PageHeader>
+    				</div>
+    				<div class="col-md-8">
+              <PolarChartComponent data={this.state.IndustryJobsCountData}/>
+    				</div>
+    			</div>
+          <div class="row">
+    				<div class="col-md-4">
+              <PageHeader>Job Info <small>View of the job information for developers with those skills</small></PageHeader>
+    				</div>
+    				<div class="col-md-8">
+              <RadarChartComponent data={this.state.JobInfoData}/>
     				</div>
     			</div>
           <div class="row">
