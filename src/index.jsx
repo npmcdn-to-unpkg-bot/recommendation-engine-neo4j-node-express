@@ -157,7 +157,10 @@ class App extends React.Component {
   }
 
   _handleTokenSelection = (text) => {
-    debugger;
+
+    //get salaries
+    var salarydata = {}
+    var self = this
     $.ajax({
         type: "POST",
         url: "http://localhost:7474/db/data/cypher",
@@ -165,14 +168,46 @@ class App extends React.Component {
         dataType: "json",
         headers:{'X-Stream': true},
         contentType:"application/json",
-        data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where s.name = \''+text+'\' return avg(d.salary_midpoint)as salary,s order by salary desc' }),
-        success:this.changeAppState  // function(data){debugger;}
-     })
+        data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where s.name = \''+text+'\' and d.experience_midpoint < 2 return avg(d.salary_midpoint)as salary order by salary desc' }),
+        success: function(data){
+          salarydata['JuniorSalary'] = data.data[0][0]
+        }
+     }).then($.ajax({
+         type: "POST",
+         url: "http://localhost:7474/db/data/cypher",
+         accepts: { json: "application/json" },
+         dataType: "json",
+         headers:{'X-Stream': true},
+         contentType:"application/json",
+         data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where s.name = \''+text+'\' and d.experience_midpoint > 2 return avg(d.salary_midpoint)as salary order by salary desc' }),
+         success: function(data){
+           salarydata['SeniorSalary'] = data.data[0][0]
+           self.changeAppState(salarydata)
+         }
+      }));
+
+
   }
 
   changeAppState = (data) => {
+    debugger;
     this.setState({
-      data : ''
+      SalaryJuniorSeniorData: {
+        labels: ['Junior', 'Senior'],
+        datasets: [{
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(54, 162, 235, 0.5)',
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+
+                ],
+                borderWidth: 1,
+                data: [data.JuniorSalary, data.SeniorSalary]
+            }]
+      }
     });
   }
 

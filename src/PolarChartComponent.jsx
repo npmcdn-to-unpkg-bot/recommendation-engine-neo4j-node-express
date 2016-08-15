@@ -7,15 +7,13 @@ import {Polar} from 'react-chartjs-2';
 class PolarChartComponent extends Component{
   constructor(props){
     super(props)
-    this.state ={
-      data: this.props.data
-    }
+
   }
 
   render() {
     return (
         <Panel bsStyle="primary">
-          <Polar data={this.state.data} />
+          <Polar data={this.props.data} />
         </Panel>
       )
   }

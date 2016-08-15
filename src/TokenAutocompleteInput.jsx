@@ -21,8 +21,6 @@ class TokenAutocompleteInput extends Component{
   }
 
   render(){
-
-    debugger;
      return (
        <TokenAutocomplete
         multiple

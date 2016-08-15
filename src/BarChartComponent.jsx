@@ -18,21 +18,17 @@ var options = {
 class BarChartComponent extends Component{
   constructor(props){
     super(props)
-    this.state ={
-      data: this.props.data,
-      height: this.props.height,
-      width: this.props.width
-    }
   }
 
   render() {
     const title = (
       <h3>Panel title</h3>
     );
+    debugger;
     return (
 
-          <BarChart data={this.state.data} height={this.state.height} width={this.state.width} options={options}/>
-        
+          <BarChart data={this.props.data} options={options}/>
+
       )
   }
 }

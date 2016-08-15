@@ -7,15 +7,12 @@ import {Doughnut} from 'react-chartjs-2';
 class DoughnutChartComponent extends Component{
   constructor(props){
     super(props)
-    this.state ={
-      data: this.props.data
-    }
   }
 
   render() {
     return (
         <Panel bsStyle="primary">
-          <Doughnut data={this.state.data} />
+          <Doughnut data={this.props.data} />
         </Panel>
       )
   }
