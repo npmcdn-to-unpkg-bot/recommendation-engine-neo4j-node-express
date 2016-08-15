@@ -49,6 +49,25 @@ class App extends React.Component {
                     data: [25000, 59000]
                 }]
           },
+          JuniorSeniorRatio:{
+            labels: [
+                "Junior Dev",
+                "Senior Dev"
+            ],
+            datasets: [
+                {
+                    data: [50, 50],
+                    backgroundColor: [
+                        "rgba(255,99,132,1)",
+                        "rgba(54, 162, 235, 1)",
+                    ],
+                    hoverBackgroundColor: [
+                        "rgba(255,99,132,1)",
+                        "rgba(54, 162, 235, 1)",
+
+                    ]
+                }]
+          },
           JuniorSkillsData:{
             labels: [
                 "Html",
@@ -175,15 +194,17 @@ class App extends React.Component {
     skillNames = skillNames.slice(0, -3)
     //get salaries
     var salarydata = {}
+    var developerCount = {}
     $.ajax("http://localhost:7474/db/data/cypher", {
         type: "POST",
         accepts: { json: "application/json" },
         dataType: "json",
         headers:{'X-Stream': true},
         contentType:"application/json",
-        data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where '+skillNames+' and d.experience_midpoint < 2 return avg(d.salary_midpoint)as salary order by salary desc'}),
+        data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where '+skillNames+' and d.experience_midpoint < 2 return avg(d.salary_midpoint)as salary, count(d) as count order by salary desc'}),
      }).then(function (data){
        salarydata['JuniorSalary'] = data.data[0][0];
+       developerCount['JuniorCount'] = data.data[0][1];
 
        return $.ajax("http://localhost:7474/db/data/cypher", {
          type: "POST",
@@ -191,11 +212,36 @@ class App extends React.Component {
          dataType: "json",
          headers:{'X-Stream': true},
          contentType:"application/json",
-         data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where '+skillNames+' and d.experience_midpoint > 2 return avg(d.salary_midpoint)as salary order by salary desc' }),
+         data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where '+skillNames+' and d.experience_midpoint > 2 return avg(d.salary_midpoint)as salary, count(d)  order by salary desc' }),
       });
     }).then(function (data) {
       salarydata['SeniorSalary'] = data.data[0][0]
-      self.changeSalaryData(salarydata)
+      developerCount['SeniorCount'] = data.data[0][1];
+      self.changeSalaryData(salarydata);
+      self.changeJuniorSeniorRatio(developerCount);
+    });
+  }
+  changeJuniorSeniorRatio(data){
+    this.setState({
+      JuniorSeniorRatio:{
+        labels: [
+            "Junior Dev",
+            "Senior Dev"
+        ],
+        datasets: [
+            {
+                data: [data.JuniorCount, data.SeniorCount],
+                backgroundColor: [
+                    "rgba(255,99,132,1)",
+                    "rgba(54, 162, 235, 1)",
+                ],
+                hoverBackgroundColor: [
+                    "rgba(255,99,132,1)",
+                    "rgba(54, 162, 235, 1)",
+
+                ]
+            }]
+      }
     });
   }
 
@@ -303,10 +349,10 @@ class App extends React.Component {
               <div className="col-sm-6 col-md-4">
                 <div className="chart-wrapper">
                   <div className="chart-title">
-                    Cell Title
+                    JuniorSeniorRatio
                   </div>
                   <div className="chart-stage">
-                    <DoughnutChartComponent data={this.state.JuniorSkillsData}/>
+                    <DoughnutChartComponent data={this.state.JuniorSeniorRatio}/>
                   </div>
                   <div className="chart-notes">
                     Notes about this chart
