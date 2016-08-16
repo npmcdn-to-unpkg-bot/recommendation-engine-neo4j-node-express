@@ -137,7 +137,7 @@ class App extends React.Component {
                   ]
               },
               JobInfoData:{
-                labels: ["Average_Age","Average_Salary", "Average_Exp", "Average_Ability", "Women_On_Team"],
+                labels: ["Average_Age", "Average_Exp", "Average_Ability", "Women_On_Team"],
                 datasets: [
                     {
                         label: "Job",
@@ -147,7 +147,7 @@ class App extends React.Component {
                         pointBorderColor: "#fff",
                         pointHoverBackgroundColor: "#fff",
                         pointHoverBorderColor: "rgba(179,181,198,1)",
-                        data: [65, 59, 90, 81]
+                        data: [2.5, 10, 5, 3]
                     },
                     {
                         label: "Job",
@@ -157,7 +157,7 @@ class App extends React.Component {
                         pointBorderColor: "#fff",
                         pointHoverBackgroundColor: "#fff",
                         pointHoverBorderColor: "rgba(255,99,132,1)",
-                        data: [28, 48, 40, 19]
+                        data: [2.8, 7, 4, 2]
                     }
                 ]
             }
@@ -195,7 +195,8 @@ class App extends React.Component {
     //set temp variables
     var salarydata = {}
     var developerCount = {}
-    var jobData
+    var jobData = []
+
     $.ajax("http://localhost:7474/db/data/cypher", {   //get salaries
         type: "POST",
         accepts: { json: "application/json" },
@@ -235,15 +236,15 @@ class App extends React.Component {
                                       'limit 5' }),
      });
    }).then(function (data) {
-
+      jobData = data;
       self.changeSalaryData(salarydata);
       self.changeJuniorSeniorRatio(developerCount);
-      self.changeJobInfoData(data);
+      self.changeJobInfoData(jobData);
     });
   }
 
   changeJobInfoData(data){
-         debugger;
+    debugger;
     this.setState({
       JobInfoData:{
         labels: ["Average_Age", "Average_Exp", "Average_Ability", "Women_On_Team"],
@@ -256,7 +257,7 @@ class App extends React.Component {
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
                 pointHoverBorderColor: "rgba(179,181,198,1)",
-                data: [data.data[0][1],
+                data: [data.data[0][1]/10,//normalize age to make a better looking graph
                        data.data[0][2],
                        data.data[0][3],
                        data.data[0][4]
@@ -270,7 +271,7 @@ class App extends React.Component {
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
                 pointHoverBorderColor: "rgba(255,99,132,1)",
-                data: [data.data[1][1],
+                data: [data.data[1][1]/10,//normalize age to make a better looking graph
                        data.data[1][2],
                        data.data[1][3],
                        data.data[1][4]
@@ -284,7 +285,7 @@ class App extends React.Component {
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
                 pointHoverBorderColor: "rgba(179,181,198,1)",
-                data: [data.data[2][1],
+                data: [data.data[2][1]/10,//normalize age to make a better looking graph
                        data.data[2][2],
                        data.data[2][3],
                        data.data[2][4]
@@ -298,7 +299,7 @@ class App extends React.Component {
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
                 pointHoverBorderColor: "rgba(179,181,198,1)",
-                data: [data.data[3][1],
+                data: [data.data[3][1]/10,//normalize age to make a better looking graph
                        data.data[3][2],
                        data.data[3][3],
                        data.data[3][4]
@@ -312,7 +313,7 @@ class App extends React.Component {
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
                 pointHoverBorderColor: "rgba(179,181,198,1)",
-                data: [data.data[4][1],
+                data: [data.data[4][1]/10,//normalize age to make a better looking graph
                        data.data[4][2],
                        data.data[4][3],
                        data.data[4][4]
@@ -424,7 +425,7 @@ class App extends React.Component {
               <div className="col-sm-6">
                 <div className="chart-wrapper">
                   <div className="chart-title">
-                    Graph
+                    Explore the Data
                   </div>
                   <div className="chart-stage">
                     <GraphVisComponent iframe={iframe}/>
@@ -469,7 +470,8 @@ class App extends React.Component {
                     Cell Title
                   </div>
                   <div className="chart-stage">
-                    <DoughnutChartComponent data={this.state.SeniorSkillsData}/>
+                    <PolarChartComponent data={this.state.IndustryJobsCountData}/>
+                    {/* <DoughnutChartComponent data={this.state.SeniorSkillsData}/> */}
                   </div>
                   <div className="chart-notes">
                     Notes about this chart
@@ -477,13 +479,13 @@ class App extends React.Component {
                 </div>
               </div>
         {/* <!-- end of three --> */}
-              <div className="col-sm-6 col-md-4">
+              {/* <div className="col-sm-6 col-md-4">
                 <div className="chart-wrapper">
                   <div className="chart-title">
                     Cell Title
                   </div>
                   <div className="chart-stage">
-                    <PolarChartComponent data={this.state.IndustryJobsCountData}/>
+
                   </div>
                   <div className="chart-notes">
                     Notes about this chart
@@ -515,7 +517,7 @@ class App extends React.Component {
                     Notes about this chart
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
