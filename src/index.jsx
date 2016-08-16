@@ -37,12 +37,12 @@ class App extends React.Component {
             datasets: [{
                     label: "My First dataset",
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.5)',
-                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(173, 98, 206, 0.5)',
+                        'rgba(48, 182, 175, 0.5)',
                     ],
                     borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
+                        'rgba(173, 98, 206,1)',
+                        'rgba(48, 182, 175, 1)',
 
                     ],
                     borderWidth: 1,
@@ -58,12 +58,12 @@ class App extends React.Component {
                 {
                     data: [50, 50],
                     backgroundColor: [
-                        "rgba(255,99,132,1)",
-                        "rgba(54, 162, 235, 1)",
+                        "rgba(173, 98, 206,1)",
+                        "rgba(48, 182, 175, 1)",
                     ],
                     hoverBackgroundColor: [
-                        "rgba(255,99,132,1)",
-                        "rgba(54, 162, 235, 1)",
+                        "rgba(173, 98, 206,1)",
+                        "rgba(48, 182, 175, 1)",
 
                     ]
                 }]
@@ -141,22 +141,22 @@ class App extends React.Component {
                 datasets: [
                     {
                         label: "Job",
-                        backgroundColor: "rgba(179,181,198,0.2)",
-                        borderColor: "rgba(179,181,198,1)",
-                        pointBackgroundColor: "rgba(179,181,198,1)",
+                        backgroundColor: "rgba(173, 98, 206,0.2)",
+                        borderColor: "rgba(173, 98, 206,1)",
+                        pointBackgroundColor: "rgba(173, 98, 206,1)",
                         pointBorderColor: "#fff",
                         pointHoverBackgroundColor: "#fff",
-                        pointHoverBorderColor: "rgba(179,181,198,1)",
+                        pointHoverBorderColor: "rgba(173, 98, 206,1)",
                         data: [2.5, 10, 5, 3]
                     },
                     {
                         label: "Job",
-                        backgroundColor: "rgba(255,99,132,0.2)",
-                        borderColor: "rgba(255,99,132,1)",
-                        pointBackgroundColor: "rgba(255,99,132,1)",
+                        backgroundColor: "rgba(48, 182, 175,0.2)",
+                        borderColor: "rgba(48, 182, 175,1)",
+                        pointBackgroundColor: "rgba(48, 182, 175,1)",
                         pointBorderColor: "#fff",
                         pointHoverBackgroundColor: "#fff",
-                        pointHoverBorderColor: "rgba(255,99,132,1)",
+                        pointHoverBorderColor: "rgba(48, 182, 175,1)",
                         data: [2.8, 7, 4, 2]
                     }
                 ]
@@ -251,12 +251,12 @@ class App extends React.Component {
         datasets: [
             {
                 label: data.data[0][0],
-                backgroundColor: "rgba(179,181,198,0.2)",
-                borderColor: "rgba(179,181,198,1)",
-                pointBackgroundColor: "rgba(179,181,198,1)",
+                backgroundColor: "rgba(173, 98, 206,0.2)",
+                borderColor: "rgba(173, 98, 206,1)",
+                pointBackgroundColor: "rgba(173, 98, 206,1)",
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: "rgba(179,181,198,1)",
+                pointHoverBorderColor: "rgba(173, 98, 206,1)",
                 data: [data.data[0][1]/10,//normalize age to make a better looking graph
                        data.data[0][2],
                        data.data[0][3],
@@ -265,12 +265,12 @@ class App extends React.Component {
             },
             {
                 label: data.data[1][0],
-                backgroundColor: "rgba(255,99,132,0.2)",
-                borderColor: "rgba(255,99,132,1)",
-                pointBackgroundColor: "rgba(255,99,132,1)",
+                backgroundColor: "rgba(48, 182, 175,0.2)",
+                borderColor: "rgba(48, 182, 175,1)",
+                pointBackgroundColor: "rgba(48, 182, 175,1)",
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: "rgba(255,99,132,1)",
+                pointHoverBorderColor: "rgba(48, 182, 175,1)",
                 data: [data.data[1][1]/10,//normalize age to make a better looking graph
                        data.data[1][2],
                        data.data[1][3],
@@ -279,12 +279,12 @@ class App extends React.Component {
             },
             {
                 label: data.data[2][0],
-                backgroundColor: "rgba(179,181,198,0.2)",
-                borderColor: "rgba(179,181,198,1)",
-                pointBackgroundColor: "rgba(179,181,198,1)",
+                backgroundColor: "rgba(244, 139, 58,0.2)",
+                borderColor: "rgba(244, 139, 58,1)",
+                pointBackgroundColor: "rgba(244, 139, 58,1)",
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: "rgba(179,181,198,1)",
+                pointHoverBorderColor: "rgba(244, 139, 58,1)",
                 data: [data.data[2][1]/10,//normalize age to make a better looking graph
                        data.data[2][2],
                        data.data[2][3],
@@ -293,12 +293,12 @@ class App extends React.Component {
             },
             {
                 label: data.data[3][0],
-                backgroundColor: "rgba(179,181,198,0.2)",
-                borderColor: "rgba(179,181,198,1)",
-                pointBackgroundColor: "rgba(179,181,198,1)",
+                backgroundColor: "rgba(	67, 86, 192,0.2)",
+                borderColor: "rgba(	67, 86, 192,1)",
+                pointBackgroundColor: "rgba(	67, 86, 192,1)",
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: "rgba(179,181,198,1)",
+                pointHoverBorderColor: "rgba(	67, 86, 192,1)",
                 data: [data.data[3][1]/10,//normalize age to make a better looking graph
                        data.data[3][2],
                        data.data[3][3],
@@ -307,12 +307,12 @@ class App extends React.Component {
             },
             {
                 label: data.data[4][0],
-                backgroundColor: "rgba(179,181,198,0.2)",
-                borderColor: "rgba(179,181,198,1)",
-                pointBackgroundColor: "rgba(179,181,198,1)",
+                backgroundColor: "rgba(	255, 108, 189,0.2)",
+                borderColor: "rgba(	255, 108, 189,1)",
+                pointBackgroundColor: "rgba(	255, 108, 189,1)",
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: "rgba(179,181,198,1)",
+                pointHoverBorderColor: "rgba(	255, 108, 189,1)",
                 data: [data.data[4][1]/10,//normalize age to make a better looking graph
                        data.data[4][2],
                        data.data[4][3],
@@ -336,12 +336,12 @@ class App extends React.Component {
             {
                 data: [data.JuniorCount, data.SeniorCount],
                 backgroundColor: [
-                    "rgba(255,99,132,1)",
-                    "rgba(54, 162, 235, 1)",
+                    "rgba(173, 98, 206,1)",
+                    "rgba(48, 182, 175, 1)",
                 ],
                 hoverBackgroundColor: [
-                    "rgba(255,99,132,1)",
-                    "rgba(54, 162, 235, 1)",
+                    "rgba(173, 98, 206,1)",
+                    "rgba(48, 182, 175, 1)",
 
                 ]
             }]
@@ -356,12 +356,12 @@ class App extends React.Component {
         datasets: [{
                 label: "Salaries",
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.5)',
-                    'rgba(54, 162, 235, 0.5)',
+                    'rgba(173, 98, 206, 0.5)',
+                    'rgba(48, 182, 175, 0.5)',
                 ],
                 borderColor: [
-                    'rgba(255,99,132,1)',
-                    'rgba(54, 162, 235, 1)',
+                    'rgba(173, 98, 206,1)',
+                    'rgba(48, 182, 175, 1)',
 
                 ],
                 borderWidth: 1,
@@ -441,6 +441,19 @@ class App extends React.Component {
               <div className="col-sm-6 col-md-4">
                 <div className="chart-wrapper">
                   <div className="chart-title">
+                    Industries
+                  </div>
+                  <div className="chart-stage">
+                    <PolarChartComponent data={this.state.IndustryJobsCountData}/>
+                  </div>
+                  <div className="chart-notes">
+                    Notes about this chart
+                  </div>
+                </div>
+              </div>
+              <div className="col-sm-6 col-md-4">
+                <div className="chart-wrapper">
+                  <div className="chart-title">
                     Average Salary for a Junior vs Senior Developer
                   </div>
                   <div className="chart-stage">
@@ -458,19 +471,7 @@ class App extends React.Component {
                   </div>
                   <div className="chart-stage">
                     <DoughnutChartComponent data={this.state.JuniorSeniorRatio}/>
-                  </div>
-                  <div className="chart-notes">
-                    Notes about this chart
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm-6 col-md-4">
-                <div className="chart-wrapper">
-                  <div className="chart-title">
-                    Cell Title
-                  </div>
-                  <div className="chart-stage">
-                    <PolarChartComponent data={this.state.IndustryJobsCountData}/>
+
                     {/* <DoughnutChartComponent data={this.state.SeniorSkillsData}/> */}
                   </div>
                   <div className="chart-notes">
