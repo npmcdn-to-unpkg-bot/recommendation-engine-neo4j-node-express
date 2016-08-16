@@ -20,7 +20,7 @@ import { SideNav, Nav } from 'react-sidenav';
 
 // http://alpha.wallhaven.cc/wallpaper/164335
 const wallpaper = 'http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-164335.png';
-var iframe = '<iframe src="http://localhost:3000/neo4jgraph.html" width="1200" height="400" frameBorder="0"></iframe>';
+var iframe = '<iframe src="http://localhost:3000/neo4jgraph.html" width="800" height="420" frameBorder="0"></iframe>';
 
 
 class App extends React.Component {
@@ -137,7 +137,7 @@ class App extends React.Component {
                   ]
               },
               JobInfoData:{
-                labels: ["Average_Age", "Average_Exp", "Average_Ability", "Women_On_Team"],
+                labels: ["Average_Age","Average_Salary", "Average_Exp", "Average_Ability", "Women_On_Team"],
                 datasets: [
                     {
                         label: "Job",
@@ -405,29 +405,29 @@ class App extends React.Component {
           <div className="container-fluid">
 
             <div className="row">
-              <div className="col-sm-8">
+              <div className="col-sm-6">
                 <div className="chart-wrapper">
                   <div className="chart-title">
-                    Graph
+                    Jobs
                   </div>
                   <div className="chart-stage">
-                    <div id="grid-1-1">
+                    {/* <div id="grid-1-1"> */}
                     <RadarChartComponent data={this.state.JobInfoData}/>
-                      {/* <GraphVisComponent iframe={iframe}/> */}
-                    </div>
+                      {/*  */}
+                    {/* </div> */}
                   </div>
                   <div className="chart-notes">
                     Notes about this chart
                   </div>
                 </div>
               </div>
-              <div className="col-sm-4">
+              <div className="col-sm-6">
                 <div className="chart-wrapper">
                   <div className="chart-title">
-                    Average Salary for a Junior vs Senior Developer
+                    Graph
                   </div>
                   <div className="chart-stage">
-                    <BarChartComponent data={this.state.SalaryJuniorSeniorData}/>
+                    <GraphVisComponent iframe={iframe}/>
                   </div>
                   <div className="chart-notes">
                     Notes about this chart
@@ -443,7 +443,7 @@ class App extends React.Component {
                     Average Salary for a Junior vs Senior Developer
                   </div>
                   <div className="chart-stage">
-
+                    <BarChartComponent data={this.state.SalaryJuniorSeniorData}/>
                   </div>
                   <div className="chart-notes">
                     Notes about this chart
