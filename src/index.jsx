@@ -137,27 +137,27 @@ class App extends React.Component {
                   ]
               },
               JobInfoData:{
-                labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+                labels: ["Average_Age", "Average_Exp", "Average_Ability", "Women_On_Team"],
                 datasets: [
                     {
-                        label: "My First dataset",
+                        label: "Job",
                         backgroundColor: "rgba(179,181,198,0.2)",
                         borderColor: "rgba(179,181,198,1)",
                         pointBackgroundColor: "rgba(179,181,198,1)",
                         pointBorderColor: "#fff",
                         pointHoverBackgroundColor: "#fff",
                         pointHoverBorderColor: "rgba(179,181,198,1)",
-                        data: [65, 59, 90, 81, 56, 55, 40]
+                        data: [65, 59, 90, 81]
                     },
                     {
-                        label: "My Second dataset",
+                        label: "Job",
                         backgroundColor: "rgba(255,99,132,0.2)",
                         borderColor: "rgba(255,99,132,1)",
                         pointBackgroundColor: "rgba(255,99,132,1)",
                         pointBorderColor: "#fff",
                         pointHoverBackgroundColor: "#fff",
                         pointHoverBorderColor: "rgba(255,99,132,1)",
-                        data: [28, 48, 40, 19, 96, 27, 100]
+                        data: [28, 48, 40, 19]
                     }
                 ]
             }
@@ -192,10 +192,11 @@ class App extends React.Component {
     //remove trailing or statement
 
     skillNames = skillNames.slice(0, -3)
-    //get salaries
+    //set temp variables
     var salarydata = {}
     var developerCount = {}
-    $.ajax("http://localhost:7474/db/data/cypher", {
+    var jobData
+    $.ajax("http://localhost:7474/db/data/cypher", {   //get salaries
         type: "POST",
         accepts: { json: "application/json" },
         dataType: "json",
@@ -217,10 +218,112 @@ class App extends React.Component {
     }).then(function (data) {
       salarydata['SeniorSalary'] = data.data[0][0]
       developerCount['SeniorCount'] = data.data[0][1];
+
+      return $.ajax("http://localhost:7474/db/data/cypher", {
+        type: "POST",
+        accepts: { json: "application/json" },
+        dataType: "json",
+        headers:{'X-Stream': true},
+        contentType:"application/json",
+        data: JSON.stringify({ query: 'match (d:Developer)-[knows]->(s:Skill) match (d:Developer)-[has_a]->(j:Job) '+
+                                      'where '+skillNames+' '+
+                                      'return j.name as Job,avg(d.age_midpoint) as Average_Age, '+
+                                      'avg(d.experience_midpoint) as Average_Exp, '+
+                                      'avg(toFloat(d.programming_ability)) as Average_Ability, '+
+                                      'avg(j.women_on_team) as Women_On_Team '+
+                                      'order by Job '+
+                                      'limit 5' }),
+     });
+   }).then(function (data) {
+
       self.changeSalaryData(salarydata);
       self.changeJuniorSeniorRatio(developerCount);
+      self.changeJobInfoData(data);
     });
   }
+
+  changeJobInfoData(data){
+         debugger;
+    this.setState({
+      JobInfoData:{
+        labels: ["Average_Age", "Average_Exp", "Average_Ability", "Women_On_Team"],
+        datasets: [
+            {
+                label: data.data[0][0],
+                backgroundColor: "rgba(179,181,198,0.2)",
+                borderColor: "rgba(179,181,198,1)",
+                pointBackgroundColor: "rgba(179,181,198,1)",
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgba(179,181,198,1)",
+                data: [data.data[0][1],
+                       data.data[0][2],
+                       data.data[0][3],
+                       data.data[0][4]
+                     ]
+            },
+            {
+                label: data.data[1][0],
+                backgroundColor: "rgba(255,99,132,0.2)",
+                borderColor: "rgba(255,99,132,1)",
+                pointBackgroundColor: "rgba(255,99,132,1)",
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgba(255,99,132,1)",
+                data: [data.data[1][1],
+                       data.data[1][2],
+                       data.data[1][3],
+                       data.data[1][4]
+                     ]
+            },
+            {
+                label: data.data[2][0],
+                backgroundColor: "rgba(179,181,198,0.2)",
+                borderColor: "rgba(179,181,198,1)",
+                pointBackgroundColor: "rgba(179,181,198,1)",
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgba(179,181,198,1)",
+                data: [data.data[2][1],
+                       data.data[2][2],
+                       data.data[2][3],
+                       data.data[2][4]
+                     ]
+            },
+            {
+                label: data.data[3][0],
+                backgroundColor: "rgba(179,181,198,0.2)",
+                borderColor: "rgba(179,181,198,1)",
+                pointBackgroundColor: "rgba(179,181,198,1)",
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgba(179,181,198,1)",
+                data: [data.data[3][1],
+                       data.data[3][2],
+                       data.data[3][3],
+                       data.data[3][4]
+                     ]
+            },
+            {
+                label: data.data[4][0],
+                backgroundColor: "rgba(179,181,198,0.2)",
+                borderColor: "rgba(179,181,198,1)",
+                pointBackgroundColor: "rgba(179,181,198,1)",
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgba(179,181,198,1)",
+                data: [data.data[4][1],
+                       data.data[4][2],
+                       data.data[4][3],
+                       data.data[4][4]
+                     ]
+            }
+        ]
+    }
+
+    });
+  }
+
   changeJuniorSeniorRatio(data){
     this.setState({
       JuniorSeniorRatio:{
@@ -309,7 +412,8 @@ class App extends React.Component {
                   </div>
                   <div className="chart-stage">
                     <div id="grid-1-1">
-                      <GraphVisComponent iframe={iframe}/>
+                    <RadarChartComponent data={this.state.JobInfoData}/>
+                      {/* <GraphVisComponent iframe={iframe}/> */}
                     </div>
                   </div>
                   <div className="chart-notes">
@@ -320,10 +424,10 @@ class App extends React.Component {
               <div className="col-sm-4">
                 <div className="chart-wrapper">
                   <div className="chart-title">
-                    Cell Title
+                    Average Salary for a Junior vs Senior Developer
                   </div>
                   <div className="chart-stage">
-                    <RadarChartComponent data={this.state.JobInfoData}/>
+                    <BarChartComponent data={this.state.SalaryJuniorSeniorData}/>
                   </div>
                   <div className="chart-notes">
                     Notes about this chart
@@ -339,7 +443,7 @@ class App extends React.Component {
                     Average Salary for a Junior vs Senior Developer
                   </div>
                   <div className="chart-stage">
-                    <BarChartComponent data={this.state.SalaryJuniorSeniorData}/>
+
                   </div>
                   <div className="chart-notes">
                     Notes about this chart
