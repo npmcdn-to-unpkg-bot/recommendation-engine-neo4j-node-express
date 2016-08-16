@@ -13,6 +13,7 @@ import DoughnutChartComponent from './DoughnutChartComponent.jsx'
 import PolarChartComponent from './PolarChartComponent.jsx'
 import RadarChartComponent from './RadarChartComponent.jsx'
 import GraphVisComponent from './GraphVisComponent.jsx'
+import JobFilterComponent from './JobFilterComponent.jsx'
 import Hero from './Hero.jsx'
 import {Panel,Grid,Row,Col,PageHeader,Form,FormGroup } from 'react-bootstrap';
 import { SideNav, Nav } from 'react-sidenav';
@@ -29,13 +30,14 @@ class App extends React.Component {
         this.state = {
           SkillNamesQuery: '',
           TokenSelection: '',
+          ActiveJobFilter: 'Jobs',
           SalaryJuniorSeniorIsVisible: false,
           chartHeight:250,
           chartWidth:250,
           SalaryJuniorSeniorData: {
             labels: ['Junior', 'Senior'],
             datasets: [{
-                    label: "My First dataset",
+                    label: "Salaries",
                     backgroundColor: [
                         'rgba(173, 98, 206, 0.5)',
                         'rgba(48, 182, 175, 0.5)',
@@ -46,7 +48,7 @@ class App extends React.Component {
 
                     ],
                     borderWidth: 1,
-                    data: [25000, 59000]
+                    data: [0, 0]
                 }]
           },
           JuniorSeniorRatio:{
@@ -147,7 +149,7 @@ class App extends React.Component {
                         pointBorderColor: "#fff",
                         pointHoverBackgroundColor: "#fff",
                         pointHoverBorderColor: "rgba(173, 98, 206,1)",
-                        data: [2.5, 10, 5, 3]
+                        data: [0, 0, 0, 0]
                     },
                     {
                         label: "Job",
@@ -157,7 +159,7 @@ class App extends React.Component {
                         pointBorderColor: "#fff",
                         pointHoverBackgroundColor: "#fff",
                         pointHoverBorderColor: "rgba(48, 182, 175,1)",
-                        data: [2.8, 7, 4, 2]
+                        data: [0, 0, 0, 0]
                     }
                 ]
             }
@@ -174,6 +176,42 @@ class App extends React.Component {
   _appear = (visible) => {
     this.setState({SalaryJuniorSeniorIsVisible: visible
     });
+
+  }
+
+  _handleFilterSelected = (e) => {
+    //store context
+    var self = this
+
+    //set the active filter
+    this.setState({ActiveJobFilter: e
+    });
+
+    //remove trailing or statement
+    var skillNames = this.state.SkillNamesQuery.slice(0, -3)
+
+    //query only if there is a skill selected
+    if (this.state.SkillNamesQuery){
+      $.ajax("http://localhost:7474/db/data/cypher", {   //get salaries
+          type: "POST",
+          accepts: { json: "application/json" },
+          dataType: "json",
+          headers:{'X-Stream': true},
+          contentType:"application/json",
+          data: JSON.stringify({ query: 'match (d:Developer)-[knows]->(s:Skill) match (d:Developer)-[has_a]->(j:Job) '+
+                                        'where '+skillNames+' '+
+                                        'return j.name as Jobs,avg(d.age_midpoint) as Average_Age, '+
+                                        'avg(d.experience_midpoint) as Average_Exp, '+
+                                        'avg(toFloat(d.programming_ability)) as Average_Ability, '+
+                                        'avg(j.women_on_team) as Women_On_Team '+
+                                        'order by '+ e +
+                                        ' limit 5' }),
+       }).then(function (data){
+         //update the jobs list
+          self.changeJobInfoData(data);
+       });
+    }
+
 
   }
 
@@ -228,11 +266,11 @@ class App extends React.Component {
         contentType:"application/json",
         data: JSON.stringify({ query: 'match (d:Developer)-[knows]->(s:Skill) match (d:Developer)-[has_a]->(j:Job) '+
                                       'where '+skillNames+' '+
-                                      'return j.name as Job,avg(d.age_midpoint) as Average_Age, '+
+                                      'return j.name as Jobs,avg(d.age_midpoint) as Average_Age, '+
                                       'avg(d.experience_midpoint) as Average_Exp, '+
                                       'avg(toFloat(d.programming_ability)) as Average_Ability, '+
                                       'avg(j.women_on_team) as Women_On_Team '+
-                                      'order by Job '+
+                                      'order by Jobs '+
                                       'limit 5' }),
      });
    }).then(function (data) {
@@ -244,7 +282,6 @@ class App extends React.Component {
   }
 
   changeJobInfoData(data){
-    debugger;
     this.setState({
       JobInfoData:{
         labels: ["Average_Age", "Average_Exp", "Average_Ability", "Women_On_Team"],
@@ -402,8 +439,13 @@ class App extends React.Component {
               <div className="row">
                 <div className="col-sm-6">
                   <div className="chart-wrapper">
-                    <div className="chart-title">
-                      <h3>Jobs</h3>
+                    <div className="chart-title" >
+                      <span >
+                        <JobFilterComponent
+                          activeButton={this.state.ActiveJobFilter}
+                          handleButtonClick={this._handleFilterSelected}
+                        />
+                      </span>
                     </div>
                     <div className="chart-stage">
                       {/* <div id="grid-1-1"> */}
@@ -419,7 +461,7 @@ class App extends React.Component {
                 <div className="col-sm-6">
                   <div className="chart-wrapper">
                     <div className="chart-title">
-                      <h3>Explore the Data</h3>
+                      <h4>Explore the Data</h4>
                     </div>
                     <div className="chart-stage">
                       <GraphVisComponent iframe={iframe}/>
