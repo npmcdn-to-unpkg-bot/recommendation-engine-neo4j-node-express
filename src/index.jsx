@@ -379,150 +379,144 @@ class App extends React.Component {
   render() {
 
     return (
-        <div className="application">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-sm-8">
-                <Hero />
-              </div>
-            </div>
-          </div>
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-md-4 col-md-offset-4">
-                <div className="chart-wrapper">
-                  <div className="chart-title">
-                    Enter your skills
-                  </div>
-                  <div className="chart-stage">
-                    <div classname= "col-lg-1 col-centered">
-                          <TokenAutocompleteInput handleTokenSelection={this._handleTokenSelection}/>
+        <div>
+          <Hero />
+          <div className="application" >
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-md-4 col-md-offset-4">
+                  <div className="chart-wrapper">
+                    <div className="chart-title">
+                      <h3>Enter your skills</h3>
+                    </div>
+                    <div className="chart-stage">
+                      <div classname= "col-lg-1 col-centered">
+                            <TokenAutocompleteInput handleTokenSelection={this._handleTokenSelection}/>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="container-fluid">
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="chart-wrapper">
+                    <div className="chart-title">
+                      <h3>Jobs</h3>
+                    </div>
+                    <div className="chart-stage">
+                      {/* <div id="grid-1-1"> */}
+                      <RadarChartComponent data={this.state.JobInfoData}/>
+                        {/*  */}
+                      {/* </div> */}
+                    </div>
+                    <div className="chart-notes">
+                      <h4>Notes about this chart</h4>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="chart-wrapper">
+                    <div className="chart-title">
+                      <h3>Explore the Data</h3>
+                    </div>
+                    <div className="chart-stage">
+                      <GraphVisComponent iframe={iframe}/>
+                    </div>
+                    <div className="chart-notes">
+                      <h4>Notes about this chart</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-            <div className="row">
-              <div className="col-sm-6">
-                <div className="chart-wrapper">
-                  <div className="chart-title">
-                    Jobs
-                  </div>
-                  <div className="chart-stage">
-                    {/* <div id="grid-1-1"> */}
-                    <RadarChartComponent data={this.state.JobInfoData}/>
-                      {/*  */}
-                    {/* </div> */}
-                  </div>
-                  <div className="chart-notes">
-                    Notes about this chart
+              <div className="row">
+                <div className="col-sm-6 col-md-4">
+                  <div className="chart-wrapper">
+                    <div className="chart-title">
+                      <h3>Industries</h3>
+                    </div>
+                    <div className="chart-stage">
+                      <PolarChartComponent data={this.state.IndustryJobsCountData}/>
+                    </div>
+                    <div className="chart-notes">
+                      <h4>Notes about this chart</h4>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-sm-6">
-                <div className="chart-wrapper">
-                  <div className="chart-title">
-                    Explore the Data
-                  </div>
-                  <div className="chart-stage">
-                    <GraphVisComponent iframe={iframe}/>
-                  </div>
-                  <div className="chart-notes">
-                    Notes about this chart
+                <div className="col-sm-6 col-md-4">
+                  <div className="chart-wrapper">
+                    <div className="chart-title">
+                      <h3>Average Salary for a Junior vs Senior Developer</h3>
+                    </div>
+                    <div className="chart-stage">
+                      <BarChartComponent data={this.state.SalaryJuniorSeniorData}/>
+                    </div>
+                    <div className="chart-notes">
+                      <h4>Notes about this chart</h4>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+                <div className="col-sm-6 col-md-4">
+                  <div className="chart-wrapper">
+                    <div className="chart-title">
+                      <h3>JuniorSeniorRatio</h3>
+                    </div>
+                    <div className="chart-stage">
+                      <DoughnutChartComponent data={this.state.JuniorSeniorRatio}/>
 
-            <div className="row">
-              <div className="col-sm-6 col-md-4">
-                <div className="chart-wrapper">
-                  <div className="chart-title">
-                    Industries
-                  </div>
-                  <div className="chart-stage">
-                    <PolarChartComponent data={this.state.IndustryJobsCountData}/>
-                  </div>
-                  <div className="chart-notes">
-                    Notes about this chart
+                      {/* <DoughnutChartComponent data={this.state.SeniorSkillsData}/> */}
+                    </div>
+                    <div className="chart-notes">
+                      <h4>Notes about this chart</h4>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-sm-6 col-md-4">
-                <div className="chart-wrapper">
-                  <div className="chart-title">
-                    Average Salary for a Junior vs Senior Developer
-                  </div>
-                  <div className="chart-stage">
-                    <BarChartComponent data={this.state.SalaryJuniorSeniorData}/>
-                  </div>
-                  <div className="chart-notes">
-                    Notes about this chart
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm-6 col-md-4">
-                <div className="chart-wrapper">
-                  <div className="chart-title">
-                    JuniorSeniorRatio
-                  </div>
-                  <div className="chart-stage">
-                    <DoughnutChartComponent data={this.state.JuniorSeniorRatio}/>
+          {/* <!-- end of three --> */}
+                {/* <div className="col-sm-6 col-md-4">
+                  <div className="chart-wrapper">
+                    <div className="chart-title">
+                      Cell Title
+                    </div>
+                    <div className="chart-stage">
 
-                    {/* <DoughnutChartComponent data={this.state.SeniorSkillsData}/> */}
-                  </div>
-                  <div className="chart-notes">
-                    Notes about this chart
+                    </div>
+                    <div className="chart-notes">
+                      Notes about this chart
+                    </div>
                   </div>
                 </div>
+                <div className="col-sm-6 col-md-4">
+                  <div className="chart-wrapper">
+                    <div className="chart-title">
+                      Cell Title
+                    </div>
+                    <div className="chart-stage">
+                      <RadarChartComponent data={this.state.JobInfoData}/>
+                    </div>
+                    <div className="chart-notes">
+                      Notes about this chart
+                    </div>
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4">
+                  <div className="chart-wrapper">
+                    <div className="chart-title">
+                      Cell Title
+                    </div>
+                    <div className="chart-stage">
+                      <RadarChartComponent data={this.state.JobInfoData}/>
+                    </div>
+                    <div className="chart-notes">
+                      Notes about this chart
+                    </div>
+                  </div>
+                </div> */}
               </div>
-        {/* <!-- end of three --> */}
-              {/* <div className="col-sm-6 col-md-4">
-                <div className="chart-wrapper">
-                  <div className="chart-title">
-                    Cell Title
-                  </div>
-                  <div className="chart-stage">
-
-                  </div>
-                  <div className="chart-notes">
-                    Notes about this chart
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm-6 col-md-4">
-                <div className="chart-wrapper">
-                  <div className="chart-title">
-                    Cell Title
-                  </div>
-                  <div className="chart-stage">
-                    <RadarChartComponent data={this.state.JobInfoData}/>
-                  </div>
-                  <div className="chart-notes">
-                    Notes about this chart
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm-6 col-md-4">
-                <div className="chart-wrapper">
-                  <div className="chart-title">
-                    Cell Title
-                  </div>
-                  <div className="chart-stage">
-                    <RadarChartComponent data={this.state.JobInfoData}/>
-                  </div>
-                  <div className="chart-notes">
-                    Notes about this chart
-                  </div>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
-
     );
   }
 

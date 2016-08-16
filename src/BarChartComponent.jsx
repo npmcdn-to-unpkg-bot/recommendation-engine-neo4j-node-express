@@ -25,9 +25,9 @@ class BarChartComponent extends Component{
       <h3>Panel title</h3>
     );
     return (
-
+        <Panel bsStyle="primary">
           <BarChart data={this.props.data} options={options}/>
-
+        </Panel>
       )
   }
 }
