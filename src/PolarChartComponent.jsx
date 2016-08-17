@@ -12,7 +12,7 @@ class PolarChartComponent extends Component{
 
   render() {
     return (
-        <Panel bsStyle="primary">
+        <Panel>
           <Polar data={this.props.data} />
         </Panel>
       )

@@ -118,7 +118,7 @@ class RadarChartComponent extends Component{
 
   render() {
     return (
-        <Panel bsStyle='primary'>
+        <Panel >
           <Radar data={this.props.data} option={radarOptions}/>
         </Panel>
       )

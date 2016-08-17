@@ -21,7 +21,7 @@ import { SideNav, Nav } from 'react-sidenav';
 
 // http://alpha.wallhaven.cc/wallpaper/164335
 const wallpaper = 'http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-164335.png';
-var iframe = '<iframe src="http://localhost:3000/neo4jgraph.html" width="800" height="420" frameBorder="0"></iframe>';
+var iframe = '<iframe src="http://localhost:3000/neo4jgraph.html" width="800" height="484" frameBorder="0"></iframe>';
 
 
 class App extends React.Component {
@@ -313,11 +313,11 @@ class App extends React.Component {
       IndustriesBySalaries:{
           datasets: [{
               data: [
-                  data.data[0][0],
-                  data.data[1][0],
-                  data.data[2][0],
-                  data.data[3][0],
-                  data.data[4][0]
+                  Math.round(data.data[0][0]),
+                  Math.round(data.data[1][0]),
+                  Math.round(data.data[2][0]),
+                  Math.round(data.data[3][0]),
+                  Math.round(data.data[4][0])
               ],
               backgroundColor: [
                 "rgba(173, 98, 206,1)",
@@ -352,10 +352,10 @@ class App extends React.Component {
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
                 pointHoverBorderColor: "rgba(173, 98, 206,1)",
-                data: [data.data[0][1]/10,//normalize age to make a better looking graph
-                       data.data[0][2],
-                       data.data[0][3],
-                       data.data[0][4]
+                data: [Math.round(data.data[0][1] * 10) / 100,//normalize age to make a better looking graph
+                       Math.round(data.data[0][2] * 10) / 10,
+                       Math.round(data.data[0][3] * 10) / 10,
+                       Math.round(data.data[0][4] * 10) / 10
                      ]
             },
             {
@@ -366,10 +366,10 @@ class App extends React.Component {
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
                 pointHoverBorderColor: "rgba(48, 182, 175,1)",
-                data: [data.data[1][1]/10,//normalize age to make a better looking graph
-                       data.data[1][2],
-                       data.data[1][3],
-                       data.data[1][4]
+                data: [Math.round(data.data[1][1] * 10) / 100,//normalize age to make a better looking graph
+                       Math.round(data.data[1][2] * 10) / 10,
+                       Math.round(data.data[1][3] * 10) / 10,
+                       Math.round(data.data[1][4] * 10) / 10
                      ]
             },
             {
@@ -380,10 +380,10 @@ class App extends React.Component {
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
                 pointHoverBorderColor: "rgba(244, 139, 58,1)",
-                data: [data.data[2][1]/10,//normalize age to make a better looking graph
-                       data.data[2][2],
-                       data.data[2][3],
-                       data.data[2][4]
+                data: [Math.round(data.data[2][1] * 10) / 100,//normalize age to make a better looking graph
+                       Math.round(data.data[2][2] * 10) / 10,
+                       Math.round(data.data[2][3] * 10) / 10,
+                       Math.round(data.data[2][4] * 10) / 10
                      ]
             },
             {
@@ -394,10 +394,10 @@ class App extends React.Component {
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
                 pointHoverBorderColor: "rgba(	67, 86, 192,1)",
-                data: [data.data[3][1]/10,//normalize age to make a better looking graph
-                       data.data[3][2],
-                       data.data[3][3],
-                       data.data[3][4]
+                data: [Math.round(data.data[3][1] * 10) / 100,//normalize age to make a better looking graph
+                       Math.round(data.data[3][2] * 10) / 10,
+                       Math.round(data.data[3][3] * 10) / 10,
+                       Math.round(data.data[3][4] * 10) / 10
                      ]
             },
             {
@@ -408,10 +408,10 @@ class App extends React.Component {
                 pointBorderColor: "#fff",
                 pointHoverBackgroundColor: "#fff",
                 pointHoverBorderColor: "rgba(	255, 108, 189,1)",
-                data: [data.data[4][1]/10,//normalize age to make a better looking graph
-                       data.data[4][2],
-                       data.data[4][3],
-                       data.data[4][4]
+                data: [Math.round(data.data[4][1] * 10) / 100,//normalize age to make a better looking graph
+                       Math.round(data.data[4][2] * 10) / 10,
+                       Math.round(data.data[4][3] * 10) / 10,
+                       Math.round(data.data[4][4] * 10) / 10
                      ]
             }
         ]
@@ -460,7 +460,7 @@ class App extends React.Component {
 
                 ],
                 borderWidth: 1,
-                data: [data.JuniorSalary, data.SeniorSalary]
+                data: [Math.round(data.JuniorSalary), Math.round(data.SeniorSalary)]
             }]
       }
     });

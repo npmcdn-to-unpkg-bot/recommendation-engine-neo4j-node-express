@@ -11,7 +11,7 @@ class DoughnutChartComponent extends Component{
 
   render() {
     return (
-        <Panel bsStyle="primary">
+        <Panel>
           <Doughnut data={this.props.data} />
         </Panel>
       )
