@@ -112,30 +112,30 @@ class App extends React.Component {
                       ]
                   }]
               },
-              IndustryJobsCountData:{
+              IndustriesBySalaries:{
                   datasets: [{
                       data: [
-                          11,
-                          16,
-                          7,
-                          3,
-                          14
+                          0,
+                          0,
+                          0,
+                          0,
+                          0
                       ],
                       backgroundColor: [
-                          "#FF6384",
-                          "#4BC0C0",
-                          "#FFCE56",
-                          "#E7E9ED",
-                          "#36A2EB"
+                        "rgba(173, 98, 206,1)",
+                        "rgba(48, 182, 175,1)",
+                        "rgba(244, 139, 58,1)",
+                        "rgba(	67, 86, 192,1)",
+                        "rgba(	255, 108, 189,1)"
                       ],
-                      label: 'My dataset' // for legend
+                      label: 'Industry Salaries' // for legend
                   }],
                   labels: [
-                      "Red",
-                      "Green",
-                      "Yellow",
-                      "Grey",
-                      "Blue"
+                      "Industry",
+                      "Industry",
+                      "Industry",
+                      "Industry",
+                      "Industry"
                   ]
               },
               JobInfoData:{
@@ -225,7 +225,10 @@ class App extends React.Component {
       skillNames = skillNames + 's.name = \''+searchTerms[i].name+'\' or ';
     }
     //update the state
-    this.setState({SkillNamesQuery: skillNames  });
+    this.setState({
+      SkillNamesQuery: skillNames,
+      ActiveJobFilter: 'Jobs'
+      });
 
     //remove trailing or statement
 
@@ -234,6 +237,7 @@ class App extends React.Component {
     var salarydata = {}
     var developerCount = {}
     var jobData = []
+    var industrySalaries = []
 
     $.ajax("http://localhost:7474/db/data/cypher", {   //get salaries
         type: "POST",
@@ -243,41 +247,95 @@ class App extends React.Component {
         contentType:"application/json",
         data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where '+skillNames+' and d.experience_midpoint < 2 return avg(d.salary_midpoint)as salary, count(d) as count order by salary desc'}),
      }).then(function (data){
-       salarydata['JuniorSalary'] = data.data[0][0];
-       developerCount['JuniorCount'] = data.data[0][1];
+         //store results in temp variables
+         salarydata['JuniorSalary'] = data.data[0][0];
+         developerCount['JuniorCount'] = data.data[0][1];
 
-       return $.ajax("http://localhost:7474/db/data/cypher", {
-         type: "POST",
-         accepts: { json: "application/json" },
-         dataType: "json",
-         headers:{'X-Stream': true},
-         contentType:"application/json",
-         data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where '+skillNames+' and d.experience_midpoint > 2 return avg(d.salary_midpoint)as salary, count(d)  order by salary desc' }),
-      });
-    }).then(function (data) {
-      salarydata['SeniorSalary'] = data.data[0][0]
-      developerCount['SeniorCount'] = data.data[0][1];
+         return $.ajax("http://localhost:7474/db/data/cypher", {
+           type: "POST",
+           accepts: { json: "application/json" },
+           dataType: "json",
+           headers:{'X-Stream': true},
+           contentType:"application/json",
+           data: JSON.stringify({ query: 'match (d:Developer)-[knows]-(s:Skill) where '+skillNames+' and d.experience_midpoint > 2 return avg(d.salary_midpoint)as salary, count(d)  order by salary desc' }),
+         });
+     }).then(function (data) {
+           //store results in temp variables
+           salarydata['SeniorSalary'] = data.data[0][0]
+           developerCount['SeniorCount'] = data.data[0][1];
 
-      return $.ajax("http://localhost:7474/db/data/cypher", {
-        type: "POST",
-        accepts: { json: "application/json" },
-        dataType: "json",
-        headers:{'X-Stream': true},
-        contentType:"application/json",
-        data: JSON.stringify({ query: 'match (d:Developer)-[knows]->(s:Skill) match (d:Developer)-[has_a]->(j:Job) '+
-                                      'where '+skillNames+' '+
-                                      'return j.name as Jobs,avg(d.age_midpoint) as Average_Age, '+
-                                      'avg(d.experience_midpoint) as Average_Exp, '+
-                                      'avg(toFloat(d.programming_ability)) as Average_Ability, '+
-                                      'avg(j.women_on_team) as Women_On_Team '+
-                                      'order by Jobs '+
-                                      'limit 5' }),
+          return $.ajax("http://localhost:7474/db/data/cypher", {
+            type: "POST",
+            accepts: { json: "application/json" },
+            dataType: "json",
+            headers:{'X-Stream': true},
+            contentType:"application/json",
+            data: JSON.stringify({ query: 'MATCH (j)-[:has_a]-(n)-[:knows]-(s) '+
+                                          'WHERE EXISTS(n.salary_midpoint) and EXISTS(j.industry) and '+skillNames+' '+
+                                          'RETURN avg(n.salary_midpoint) as avg_salary ,j.industry '+
+                                          'Order by avg_salary desc '+
+                                          'limit 5' }),
+         });
+     }).then(function (data) {
+        //store results in temp variables
+        industrySalaries = data;
+
+           return $.ajax("http://localhost:7474/db/data/cypher", {
+              type: "POST",
+              accepts: { json: "application/json" },
+              dataType: "json",
+              headers:{'X-Stream': true},
+              contentType:"application/json",
+              data: JSON.stringify({ query: 'match (d:Developer)-[knows]->(s:Skill) match (d:Developer)-[has_a]->(j:Job) '+
+                                            'where '+skillNames+' '+
+                                            'return j.name as Jobs,avg(d.age_midpoint) as Average_Age, '+
+                                            'avg(d.experience_midpoint) as Average_Exp, '+
+                                            'avg(toFloat(d.programming_ability)) as Average_Ability, '+
+                                            'avg(j.women_on_team) as Women_On_Team '+
+                                            'order by Jobs '+
+                                            'limit 5' }),
+           });
+     }).then(function (data) {
+        //store results in temp variables
+        jobData = data;
+
+        //update state
+        self.changeSalaryData(salarydata);
+        self.changeJuniorSeniorRatio(developerCount);
+        self.changeJobInfoData(jobData);
+        self.changeIndustrySalariesData(industrySalaries);
+
      });
-   }).then(function (data) {
-      jobData = data;
-      self.changeSalaryData(salarydata);
-      self.changeJuniorSeniorRatio(developerCount);
-      self.changeJobInfoData(jobData);
+  }
+
+  changeIndustrySalariesData(data){
+    this.setState({
+      IndustriesBySalaries:{
+          datasets: [{
+              data: [
+                  data.data[0][0],
+                  data.data[1][0],
+                  data.data[2][0],
+                  data.data[3][0],
+                  data.data[4][0]
+              ],
+              backgroundColor: [
+                "rgba(173, 98, 206,1)",
+                "rgba(48, 182, 175,1)",
+                "rgba(244, 139, 58,1)",
+                "rgba(	67, 86, 192,1)",
+                "rgba(	255, 108, 189,1)"
+              ],
+              label: 'Industry Salaries' // for legend
+          }],
+          labels: [
+              data.data[0][1],
+              data.data[1][1],
+              data.data[2][1],
+              data.data[3][1],
+              data.data[4][1]
+          ]
+      }
     });
   }
 
@@ -480,7 +538,7 @@ class App extends React.Component {
                       <h3>Industries</h3>
                     </div>
                     <div className="chart-stage">
-                      <PolarChartComponent data={this.state.IndustryJobsCountData}/>
+                      <PolarChartComponent data={this.state.IndustriesBySalaries}/>
                     </div>
                     <div className="chart-notes">
                       <h4>Notes about this chart</h4>
