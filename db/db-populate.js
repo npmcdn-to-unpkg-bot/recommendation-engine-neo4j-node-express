@@ -224,73 +224,73 @@ j =1; //recod of the row for logiing
 
       }
 
-      // function querydb(responderID,skillName,relationshipName,callback){
-      //   debugger;
-      //   db.cypher({
-      //     //create query string
-      //     query: 'MATCH (d:Developer) '+
-      //            'MATCH (s:Skill) '+
-      //            'where '+
-      //            'd.responder = {responderID} and '+
-      //            's.name = {skillName} '+ //remove left whitespace
-      //            'CREATE (d)-[k:'+relationshipName+']->(s) '+
-      //            'RETURN k',
-      //     params: {
-      //       responderID: responderID,
-      //       skillName: skillName,
-      //       },
-      //     }, function (err,results) {
-      //         if (err) throw(err)
-      //         console.log(results);
-      //         callback;
-      //     });
-      // }
-      //
-      // function createSkills(responderID,skillName,relationshipName, callback){
-      //   querydb(responderID,skillName,relationshipName,callback);
-      // }
-      //
-      // function createKnownSkills(responder, callback) {
-      //   var knownSkills = responder[Object.keys(responder)][0].knows;
-      //   var operations = knownSkills === undefined ? [] : Object.keys(knownSkills).map(function (skill) {
-      //     return function (cb) {
-      //       return createSkills(parseInt(Object.keys(responder)[0],10),knownSkills[skill],'knows',cb);
-      //     };
-      //   });
-      //   async.series(operations,callback);
-      //
-      // }
-      //
-      // function createDesiredSkills(responder,callback) {
-      //   var desiredSkills = responder[Object.keys(responder)][0].wants_to_know;
-      //   var operations = desiredSkills === undefined ? [] : Object.keys(desiredSkills).map(function (skill) {
-      //     return function (cb) {
-      //       return createSkills(parseInt(Object.keys(responder)[0],10),desiredSkills[skill],'wants_to_know',cb);
-      //     };
-      //   });
-      //   async.series(operations,callback);
-      //
-      //
-      // }
-      //
-      // function createSkillsRelationships(responder,callback){
-      //   //loop over known skills and write relationships
-      //   async.series([
-      //     function(cb){ return createKnownSkills(responder,cb)},
-      //     function(cb){ return createDesiredSkills(responder,cb)}
-      //   ],callback);
-      //
-      //   //loop over desired skills and write relationships
-      //
-      // }
-      //
-      // async.eachSeries(skillRelations, createSkillsRelationships, function (err,results) {
-      //     if (err) {
-      //       console.log(err);
-      //       return;
-      //     }
-      //     console.log(results);
-      // });
+      function querydb(responderID,skillName,relationshipName,callback){
+        debugger;
+        db.cypher({
+          //create query string
+          query: 'MATCH (d:Developer) '+
+                 'MATCH (s:Skill) '+
+                 'where '+
+                 'd.responder = {responderID} and '+
+                 's.name = {skillName} '+ //remove left whitespace
+                 'CREATE (d)-[k:'+relationshipName+']->(s) '+
+                 'RETURN k',
+          params: {
+            responderID: responderID,
+            skillName: skillName,
+            },
+          }, function (err,results) {
+              if (err) throw(err)
+              console.log(results);
+              return callback;
+          });
+      }
+
+      function createSkills(responderID,skillName,relationshipName, callback){
+        querydb(responderID,skillName,relationshipName,callback);
+      }
+
+      function createKnownSkills(responder, callback) {
+        var knownSkills = responder[Object.keys(responder)][0].knows;
+        var operations = knownSkills === undefined ? [] : Object.keys(knownSkills).map(function (skill) {
+          return function (cb) {
+            return createSkills(parseInt(Object.keys(responder)[0],10),knownSkills[skill],'knows',cb);
+          };
+        });
+        async.series(operations,callback);
+
+      }
+
+      function createDesiredSkills(responder,callback) {
+        var desiredSkills = responder[Object.keys(responder)][0].wants_to_know;
+        var operations = desiredSkills === undefined ? [] : Object.keys(desiredSkills).map(function (skill) {
+          return function (cb) {
+            return createSkills(parseInt(Object.keys(responder)[0],10),desiredSkills[skill],'wants_to_know',cb);
+          };
+        });
+        async.series(operations,callback);
+
+
+      }
+
+      function createSkillsRelationships(responder,callback){
+        //loop over known skills and write relationships
+        async.series([
+          function(cb){ return createKnownSkills(responder,cb)},
+          function(cb){ return createDesiredSkills(responder,cb)}
+        ],callback);
+
+        //loop over desired skills and write relationships
+
+      }
+
+      async.eachSeries(skillRelations, createSkillsRelationships, function (err,results) {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          console.log(results);
+      });
 
 
 
