@@ -21,7 +21,7 @@ import { SideNav, Nav } from 'react-sidenav';
 
 // http://alpha.wallhaven.cc/wallpaper/164335
 const wallpaper = 'http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-164335.png';
-var iframe = '<iframe src="http://localhost:3000/neo4jgraph.html" width="800" height="484" frameBorder="0"></iframe>';
+var iframe = '<iframe src="http://localhost:3000/neo4jgraph.html" width="760" height="484" frameBorder="0"></iframe>';
 
 
 class App extends React.Component {
@@ -229,7 +229,7 @@ class App extends React.Component {
       SkillNamesQuery: skillNames,
       ActiveJobFilter: 'Jobs'
       });
-      
+
     if(skillNames){
       //remove trailing or statement
       skillNames = skillNames.slice(0, -3)
